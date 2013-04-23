@@ -20,18 +20,20 @@ bin=$(cd -P -- "$(dirname -- "$this")" && pwd -P)
 script="$(basename -- "$this")"
 this="$bin/$script"
 
+
 export HIBENCH_VERSION="2.2"
 
 ###################### Global Paths ##################
 
-HADOOP_EXECUTABLE= 
-HADOOP_CONF_DIR=
-HADOOP_EXAMPLES_JAR=
+HADOOP_HOME=/home/jon/research/hadoop-xtrace/hadoop-deploy
+HADOOP_EXECUTABLE=$HADOOP_HOME/bin/hadoop
+HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+HADOOP_EXAMPLES_JAR=$HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.0.4-alpha.jar
 
 if [ -n "$HADOOP_HOME" ]; then
 	HADOOP_EXECUTABLE=$HADOOP_HOME/bin/hadoop
-	HADOOP_CONF_DIR=$HADOOP_HOME/conf
-	HADOOP_EXAMPLES_JAR=$HADOOP_HOME/hadoop-examples*.jar
+	HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+	HADOOP_EXAMPLES_JAR=$HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.0.4-alpha.jar
 else 					
 ##make some guess if none of these variables are set
 	if [ -z $HADOOP_EXECUTABLE ]; then
@@ -61,9 +63,7 @@ if [ -z "$HIBENCH_CONF" ]; then
     export HIBENCH_CONF=${HIBENCH_HOME}/conf
 fi
 
-if [ -f "${HIBENCH_CONF}/funcs.sh" ]; then
-    . "${HIBENCH_CONF}/funcs.sh"
-fi
+. "${HIBENCH_CONF}/funcs.sh"
 
 
 if [ -z "$HIVE_HOME" ]; then
@@ -78,7 +78,8 @@ else
 fi
 
 if [ -z "$MAHOUT_HOME" ]; then
-    export MAHOUT_HOME=${HIBENCH_HOME}/common/mahout-distribution-0.7-$HADOOP_VERSION
+    export MAHOUT_HOME=${HIBENCH_HOME}/common/mahout-trunk
+    echo MAHOUT_HOME=$MAHOUT_HOME
 fi
 
 if [ -z "$NUTCH_HOME" ]; then
@@ -102,7 +103,7 @@ fi
 HADOOP_CONF_DIR="${HADOOP_CONF_DIR:-$HADOOP_HOME/conf}"
 
 # base dir HDFS
-export DATA_HDFS=/HiBench
+export DATA_HDFS=/user/jon
 
 # local report
 export HIBENCH_REPORT=${HIBENCH_HOME}/hibench.report

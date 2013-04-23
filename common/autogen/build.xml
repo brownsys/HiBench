@@ -35,6 +35,7 @@
         		<attribute name="Built-By" value="lan.yi@intel.com"/>
         		<attribute name="Implementation-Version" value="2.2"/>
         	</manifest>
+		<zipgroupfileset dir="lib" includes="*.jar" />
         </jar>
     </target>
 
