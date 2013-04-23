@@ -32,12 +32,13 @@ else
     COMPRESS_OPT="-D mapred.output.compress=false"
 fi
 
+
 # path check
 $HADOOP_EXECUTABLE dfs -rmr $INPUT_HDFS
 
 # generate data
 $HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR randomtextwriter \
    $COMPRESS_OPT \
-   -D test.randomtextwrite.bytes_per_map=$((${DATASIZE} / ${NUM_MAPS})) \
-   -D test.randomtextwrite.maps_per_host=${NUM_MAPS} \
+   -D mapreduce.randomtextwriter.bytespermap=$((${DATASIZE} / ${NUM_MAPS})) \
+   -D mapreduce.randomtextwriter.maps_per_host=${NUM_MAPS} \
    $INPUT_HDFS
