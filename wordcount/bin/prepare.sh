@@ -40,5 +40,5 @@ $HADOOP_EXECUTABLE dfs -rmr $INPUT_HDFS
 $HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR randomtextwriter \
    $COMPRESS_OPT \
    -D mapreduce.randomtextwriter.bytespermap=$((${DATASIZE} / ${NUM_MAPS})) \
-   -D mapreduce.randomtextwriter.maps_per_host=${NUM_MAPS} \
+   -D mapreduce.randomtextwriter.mapsperhost=${NUM_MAPS} \
    $INPUT_HDFS
