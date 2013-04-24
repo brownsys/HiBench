@@ -14,6 +14,7 @@ kmeans
 The rest are untested
 
 Steps to set up:
+
 1.  Modify HiBench/bin/hibench-config.sh
 2.  Make sure that hadoop is installed into Maven: navigate to hadoop root and mvn install
 3.  Install Mahout: navigate to HiBench/common/mahout-trunk and run the following command:
