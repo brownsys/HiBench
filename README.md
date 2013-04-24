@@ -15,12 +15,10 @@ The rest are untested
 
 Steps to set up:
 1.  Modify HiBench/bin/hibench-config.sh
-2.  Make sure that hadoop is installed into Maven:
-   1.  Go to Hadoop root
-   2.  $ mvn install
-3.  Install Mahout
-   1.  Go to HiBench/common/mahout-trunk
-   2.  $ mvn -Phadoop-0.23 clean install -DskipTests -Dhadoop.version=2.0.4-alpha
+2.  Make sure that hadoop is installed into Maven: navigate to hadoop root and mvn install
+3.  Install Mahout: navigate to HiBench/common/mahout-trunk and run the following command:
+
+    $ mvn -Phadoop-0.23 clean install -DskipTests -Dhadoop.version=2.0.4-alpha
 -Dmahout.skip.distribution=false
 
 Further points to note:
