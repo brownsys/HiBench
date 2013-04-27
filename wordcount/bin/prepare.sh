@@ -41,4 +41,5 @@ $HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR randomtextwriter \
    $COMPRESS_OPT \
    -D mapreduce.randomtextwriter.bytespermap=$((${DATASIZE} / ${NUM_MAPS})) \
    -D mapreduce.randomtextwriter.mapsperhost=${NUM_MAPS} \
+   -D mapred.job.name="hibench.wordcount.prepare"
    $INPUT_HDFS
