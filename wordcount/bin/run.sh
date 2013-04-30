@@ -48,7 +48,7 @@ $HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR wordcount \
     -D mapred.reduce.tasks=${NUM_REDS} \
     -D mapreduce.inputformat.class=org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat \
     -D mapreduce.outputformat.class=org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat \
-    -D mapred.job.name="hibench.wordcount.run" \
+    -D mapred.job.name="hibench.wordcount.run $DATASIZE" \
     $INPUT_HDFS $OUTPUT_HDFS
 
 # post-running

@@ -15,6 +15,7 @@
 
 #!/bin/bash
 
+
 # compress
 COMPRESS=$COMPRESS_GLOBAL
 COMPRESS_CODEC=$COMPRESS_CODEC_GLOBAL
@@ -30,8 +31,12 @@ fi
 
 # for preparation (per node) - 32G
 #DATASIZE=32000000000
-DATASIZE=3200000000
-NUM_MAPS=16
+MEAN=3500000
+STDEV=500000
+bin=`dirname "$0"`
+DATASIZE=`python $bin/../conf/generate_datasize.py $MEAN $STDEV`
+echo "Datasize is" $DATASIZE
+NUM_MAPS=1
 
 # for running (in total)
-NUM_REDS=48
+NUM_REDS=1
