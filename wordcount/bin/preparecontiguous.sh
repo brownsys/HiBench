@@ -1,3 +1,4 @@
+#!/bin/bash
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
@@ -13,35 +14,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#!/bin/bash
+bin=`dirname "$0"`
+bin=`cd "$bin"; pwd`
 
+echo "========== preparing wordcount data=========="
+# configure
+DIR=`cd $bin/../; pwd`
+. "${DIR}/../bin/hibench-config.sh"
+. "${DIR}/conf/configure.sh"
 
-# compress
-COMPRESS=$COMPRESS_GLOBAL
-COMPRESS_CODEC=$COMPRESS_CODEC_GLOBAL
-
-# paths
-INPUT_HDFS=${DATA_HDFS}/Wordcount/Input
-OUTPUT_HDFS=${DATA_HDFS}/Wordcount/Output
-
+# compress check
 if [ $COMPRESS -eq 1 ]; then
-    INPUT_HDFS=${INPUT_HDFS}-comp
-    OUTPUT_HDFS=${OUTPUT_HDFS}-comp
+    COMPRESS_OPT="-D mapred.output.compress=true \
+    -D mapred.output.compression.codec=$COMPRESS_CODEC \
+    -D mapred.output.compression.type=BLOCK "
+else
+    COMPRESS_OPT="-D mapred.output.compress=false"
 fi
 
-# for preparation (per node) - 32G
-#DATASIZE=32000000000
-SF=104857600
-bin=`dirname "$0"`
-DATASIZE=`python $bin/../conf/generate_datasize.py $SF`
-echo "Datasize is" $DATASIZE
-NUM_MAPS=1
 
-# for preparation of contiguous data
-BLOCK_MULTIPLIER=16
-BLOCK_SIZE=1048576
-SF_CONT=$((BLOCK_SIZE*BLOCK_MULTIPLIER))
-TOTAL_BYTES=`python $bin/../conf/generate_datasize.py $SF_CONT`
+# path check
+$HADOOP_EXECUTABLE dfs -rmr $INPUT_HDFS
 
-# for running (in total)
-NUM_REDS=2
+# generate data
+$HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR randomtextwriter \
+   $COMPRESS_OPT \
+   -D mapreduce.randomtextwriter.mapsperhost=0 \
+   -D mapreduce.randomtextwriter.totalbytes=$TOTAL_BYTES \
+   -D mapred.job.name="hibench.wordcount.prepare ${DATASIZE}" \
+   $INPUT_HDFS
