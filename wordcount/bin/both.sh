@@ -17,21 +17,34 @@
 bin=`dirname "$0"`
 bin=`cd "$bin"; pwd`
 
-echo "========== running wordcount bench =========="
+echo "========== preparing wordcount data=========="
 # configure
 DIR=`cd $bin/../; pwd`
 . "${DIR}/../bin/hibench-config.sh"
 . "${DIR}/conf/configure.sh"
 
-# compress
-if [ $COMPRESS -eq 1 ]
-then
+# compress check
+if [ $COMPRESS -eq 1 ]; then
     COMPRESS_OPT="-D mapred.output.compress=true \
-    -D mapred.output.compression.type=BLOCK \
-    -D mapred.output.compression.codec=$COMPRESS_CODEC"
+    -D mapred.output.compression.codec=$COMPRESS_CODEC \
+    -D mapred.output.compression.type=BLOCK "
 else
     COMPRESS_OPT="-D mapred.output.compress=false"
 fi
+
+
+# path check
+$HADOOP_EXECUTABLE dfs -rmr $INPUT_HDFS
+
+# generate data
+$HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR randomtextwriter \
+   $COMPRESS_OPT \
+   -D mapreduce.randomtextwriter.bytespermap=$((${DATASIZE} / ${NUM_MAPS})) \
+   -D mapreduce.randomtextwriter.mapsperhost=${NUM_MAPS} \
+   -D mapred.job.name="hibench.wordcount.prepare ${DATASIZE}" \
+   $INPUT_HDFS
+
+sleep 5
 
 # path check
 $HADOOP_EXECUTABLE dfs -rmr  $OUTPUT_HDFS
@@ -48,7 +61,7 @@ $HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR wordcount \
     -D mapred.reduce.tasks=${NUM_REDS} \
     -D mapreduce.inputformat.class=org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat \
     -D mapreduce.outputformat.class=org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat \
-    -D mapred.job.name="hibench.wordcount.run pareto" \
+    -D mapred.job.name="hibench.wordcount.run pareto2 ${DATASIZE}" \
     $INPUT_HDFS $OUTPUT_HDFS
 
 # post-running
