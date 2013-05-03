@@ -34,7 +34,6 @@ fi
 SF=104857600
 bin=`dirname "$0"`
 DATASIZE=`python $bin/../conf/generate_datasize.py $SF`
-echo "Datasize is" $DATASIZE
 NUM_MAPS=1
 
 # for preparation of contiguous data

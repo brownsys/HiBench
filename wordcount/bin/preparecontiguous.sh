@@ -36,10 +36,12 @@ fi
 # path check
 $HADOOP_EXECUTABLE dfs -rmr $INPUT_HDFS
 
+echo "Total bytes is" $TOTAL_BYTES
+
 # generate data
 $HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR randomtextwriter \
    $COMPRESS_OPT \
    -D mapreduce.randomtextwriter.mapsperhost=0 \
    -D mapreduce.randomtextwriter.totalbytes=$TOTAL_BYTES \
-   -D mapred.job.name="hibench.wordcount.prepare ${DATASIZE}" \
+   -D mapred.job.name="hibench.wordcount.preparecontiguous ${TOTAL_BYTES}" \
    $INPUT_HDFS

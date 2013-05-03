@@ -36,6 +36,7 @@ fi
 # path check
 $HADOOP_EXECUTABLE dfs -rmr $INPUT_HDFS
 
+echo "Data size is" $DATASIZE
 # generate data
 $HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR randomtextwriter \
    $COMPRESS_OPT \

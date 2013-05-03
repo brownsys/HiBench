@@ -1,4 +1,3 @@
-#!/bin/bash
 # Licensed to the Apache Software Foundation (ASF) under one or more
 # contributor license agreements.  See the NOTICE file distributed with
 # this work for additional information regarding copyright ownership.
@@ -36,12 +35,14 @@ fi
 # path check
 $HADOOP_EXECUTABLE dfs -rmr $INPUT_HDFS
 
+echo "Total bytes is" $TOTAL_BYTES
+
 # generate data
 $HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR randomtextwriter \
    $COMPRESS_OPT \
-   -D mapreduce.randomtextwriter.bytespermap=$((${DATASIZE} / ${NUM_MAPS})) \
-   -D mapreduce.randomtextwriter.mapsperhost=${NUM_MAPS} \
-   -D mapred.job.name="hibench.wordcount.prepare ${DATASIZE}" \
+   -D mapreduce.randomtextwriter.mapsperhost=0 \
+   -D mapreduce.randomtextwriter.totalbytes=$TOTAL_BYTES \
+   -D mapred.job.name="hibench.wordcount.preparecontiguous ${TOTAL_BYTES}" \
    $INPUT_HDFS
 
 sleep 5
@@ -61,7 +62,7 @@ $HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR wordcount \
     -D mapred.reduce.tasks=${NUM_REDS} \
     -D mapreduce.inputformat.class=org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat \
     -D mapreduce.outputformat.class=org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat \
-    -D mapred.job.name="hibench.wordcount.run pareto2 ${DATASIZE}" \
+    -D mapred.job.name="hibench.wordcount.run pareto2 ${TOTAL_BYTES}" \
     $INPUT_HDFS $OUTPUT_HDFS
 
 # post-running
