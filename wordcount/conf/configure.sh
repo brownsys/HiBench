@@ -31,10 +31,9 @@ fi
 
 # for preparation (per node) - 32G
 #DATASIZE=32000000000
-MEAN=3500000
-STDEV=500000
+SF=104857600
 bin=`dirname "$0"`
-DATASIZE=`python $bin/../conf/generate_datasize.py $MEAN $STDEV`
+DATASIZE=`python $bin/../conf/generate_datasize.py $SF`
 echo "Datasize is" $DATASIZE
 NUM_MAPS=1
 
