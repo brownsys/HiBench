@@ -37,7 +37,7 @@ DATASIZE=`python $bin/../conf/generate_datasize.py $SF`
 NUM_MAPS=1
 
 # for preparation of contiguous data
-BLOCK_MULTIPLIER=16
+BLOCK_MULTIPLIER=8
 BLOCK_SIZE=1048576
 SF_CONT=$((BLOCK_SIZE*BLOCK_MULTIPLIER))
 TOTAL_BYTES=`python $bin/../conf/generate_datasize.py $SF_CONT`
