@@ -25,31 +25,8 @@ export HIBENCH_VERSION="2.2"
 
 ###################### Global Paths ##################
 
-HADOOP_HOME=$HADOOP_DEV_HOME
 HADOOP_EXECUTABLE=$HADOOP_HOME/bin/hadoop
-HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
-HADOOP_EXAMPLES_JAR=$HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.0.4-alpha.jar
-
-if [ -n "$HADOOP_HOME" ]; then
-	HADOOP_EXECUTABLE=$HADOOP_HOME/bin/hadoop
-	HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
-	HADOOP_EXAMPLES_JAR=$HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.0.4-alpha.jar
-else 					
-##make some guess if none of these variables are set
-	if [ -z $HADOOP_EXECUTABLE ]; then
-		HADOOP_EXECUTABLE=`which hadoop`
-	fi
-	IFS=':'
-	for d in `$HADOOP_EXECUTABLE classpath`; do
-		if [ -z $HADOOP_CONF_DIR ] && [[ $d = */conf ]]; then
-			HADOOP_CONF_DIR=$d
-		fi
-		if [ -z $HADOOP_EXAMPLES_JAR ] && [[ $d = *hadoop-examples*.jar ]]; then
-			HADOOP_EXAMPLES_JAR=$d
-		fi
-	done
-	unset IFS
-fi
+HADOOP_EXAMPLES_JAR=$HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.1.0-beta.jar
 
 echo HADOOP_EXECUTABLE=${HADOOP_EXECUTABLE:? "ERROR: Please set paths in $this before using HiBench."}
 echo HADOOP_CONF_DIR=${HADOOP_CONF_DIR:? "ERROR: Please set paths in $this before using HiBench."}
@@ -64,31 +41,6 @@ if [ -z "$HIBENCH_CONF" ]; then
 fi
 
 . "${HIBENCH_CONF}/funcs.sh"
-
-
-if [ -z "$HIVE_HOME" ]; then
-    export HIVE_HOME=${HIBENCH_HOME}/common/hive-0.9.0-bin
-fi
-
-
-if $HADOOP_EXECUTABLE version|grep -i -q cdh4; then
-	HADOOP_VERSION=cdh4
-else
-	HADOOP_VERSION=hadoop1
-fi
-
-if [ -z "$MAHOUT_HOME" ]; then
-    export MAHOUT_HOME=${HIBENCH_HOME}/common/mahout-trunk
-    echo MAHOUT_HOME=$MAHOUT_HOME
-fi
-
-if [ -z "$NUTCH_HOME" ]; then
-    export NUTCH_HOME=${HIBENCH_HOME}/nutchindexing/nutch-1.2-$HADOOP_VERSION
-fi
-
-if [ -z "$DATATOOLS" ]; then
-    export DATATOOLS=${HIBENCH_HOME}/common/autogen/dist/datatools.jar
-fi
 
 if [ $# -gt 1 ]
 then

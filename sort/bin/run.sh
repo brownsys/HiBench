@@ -37,10 +37,6 @@ fi
 $HADOOP_EXECUTABLE dfs -rmr $OUTPUT_HDFS
 
 # pre-running
-SIZE=$($HADOOP_EXECUTABLE job -history $INPUT_HDFS | grep 'org.apache.hadoop.examples.RandomTextWriter$Counters.*|BYTES_WRITTEN')
-SIZE=${SIZE##*|}
-SIZE=${SIZE//,/}
-START_TIME=`timestamp`
 
 # run bench
 $HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR sort \
@@ -50,7 +46,4 @@ $HADOOP_EXECUTABLE jar $HADOOP_EXAMPLES_JAR sort \
     -r ${NUM_REDS} \
     $INPUT_HDFS $OUTPUT_HDFS
 
-# post-running
-END_TIME=`timestamp`
-gen_report "SORT" ${START_TIME} ${END_TIME} ${SIZE}
 
