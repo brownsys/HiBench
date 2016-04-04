@@ -26,7 +26,7 @@ export HIBENCH_VERSION="2.2"
 ###################### Global Paths ##################
 
 HADOOP_EXECUTABLE=$HADOOP_HOME/bin/hadoop
-HADOOP_EXAMPLES_JAR=$HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.1.0-beta.jar
+HADOOP_EXAMPLES_JAR=$HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.2.jar
 
 echo HADOOP_EXECUTABLE=${HADOOP_EXECUTABLE:? "ERROR: Please set paths in $this before using HiBench."}
 echo HADOOP_CONF_DIR=${HADOOP_CONF_DIR:? "ERROR: Please set paths in $this before using HiBench."}
